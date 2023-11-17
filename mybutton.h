@@ -7,6 +7,7 @@
 #define MAX_BUTTONS 14
 #define BTN_LONG_PRESS (1<<14)
 #define BTN_REPT_PRESS (1<<15)
+#define BTN_BUTTONMASK ((1 << MAX_BUTTONS) - 1)
 
 #ifndef BTN_DBNC_TIME
 #define BTN_DBNC_TIME 50
@@ -20,27 +21,32 @@
 #define BTN_REPT_TIME 300
 #endif
 
-
 class MyButton {
   
   private:
-    uint8_t buttons[MAX_BUTTONS + 1];
+    uint8_t buttons[MAX_BUTTONS + 1] = {};
+    uint8_t cnt = 0;
     uint16_t prevbtn = 0;
     uint16_t button;
-    bool emit;
-    int retval;
-    unsigned long prevtime;
+    bool emit = true;
+    int retval = 0;
+    unsigned long prevtime = millis();
     
-    void init();
     void loop();
     
   public:
-    MyButton::MyButton();
+    MyButton();
+    MyButton(byte b0);
+    MyButton(byte b0, byte b1);
+    MyButton(byte b0, byte b1, byte b2);
+    MyButton(byte b0, byte b1, byte b2, byte b3);
+    MyButton(byte b0, byte b1, byte b2, byte b3, byte b4);
+    void flush();
     bool add(byte button);
-    int count();
     void begin();
     int peek();
     int get();
+    int count();
 };
 
 #endif

@@ -1,13 +1,31 @@
 #include "mybutton.h"
 
 
+MyButton::MyButton(byte b0, byte b1, byte b2, byte b3, byte b4) {
+  add(b0); add(b1); add(b2); add(b3); add(b4); 
+}
+
+MyButton::MyButton(byte b0, byte b1, byte b2, byte b3) {
+  add(b0); add(b1); add(b2); add(b3); 
+}
+
+MyButton::MyButton(byte b0, byte b1, byte b2) {
+  add(b0); add(b1); add(b2); 
+}
+
+MyButton::MyButton(byte b0, byte b1) {
+  add(b0); add(b1); 
+}
+
+MyButton::MyButton(byte b0) {
+  add(b0);
+}
+
 MyButton::MyButton() {
-  buttons[0] = 0;
-  init();
 }
 
 
-void MyButton::init() {
+void MyButton::flush() {
   prevbtn = 0;
   emit = true;
   retval = 0;
@@ -16,29 +34,20 @@ void MyButton::init() {
 
 
 bool MyButton::add(byte button) {
-  int c = count();
-  if (c == MAX_BUTTONS)
+  if (cnt == MAX_BUTTONS)
     return false;
 
-  buttons[c++] = button;
-  buttons[c] = 0;
+  buttons[cnt++] = button;
   return true;
 }
 
 
-int MyButton::count() {  
-  int c = 0;
-  while (buttons[c] != 0) c++;
-  return c;
-}
-
-
 void MyButton::begin() {
-  for (int c = 0; c < count(); c++) {
+  for (int c = 0; c < cnt; c++) {
     // Serial.printf("pin%d ", buttons[c]);
     pinMode(buttons[c], INPUT_PULLUP);
   }
-  init();
+  flush();
 }
 
 int MyButton::peek() {
@@ -55,12 +64,17 @@ int MyButton::get() {
 }
 
 
+int MyButton::count() {
+  return cnt;
+}
+
+
 void MyButton::loop() {
   uint16_t button = 0;
   uint16_t bitval = 1;
   unsigned long btntime = millis();
 
-  for (int c = 0; buttons[c] != 0; bitval <<= 1, c++)
+  for (int c = 0; c < cnt; bitval <<= 1, c++)
     button |= digitalRead(buttons[c]) ? 0 : bitval;
 
   // Serial.printf("key%d ", button);

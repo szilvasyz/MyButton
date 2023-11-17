@@ -8,15 +8,15 @@ MyButton btn;
 
 void setup() {
   Serial.begin(115200);
-  Serial.printf("start: %d\n", btn.count());
+  Serial.printf("start: %d\n", btn.cnt());
 
   btn.add(BT1_PIN);
-  Serial.printf("btn1: %d\n", btn.count());
+  Serial.printf("btn1: %d\n", btn.cnt());
   btn.add(BT2_PIN);
-  Serial.printf("btn2: %d\n", btn.count());
+  Serial.printf("btn2: %d\n", btn.cnt());
   btn.begin();
   
-  Serial.printf("begin: %d\n", btn.count());
+  Serial.printf("begin: %d\n", btn.cnt());
 }
 
 void loop() {
