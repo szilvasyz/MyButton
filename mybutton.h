@@ -31,6 +31,10 @@ class MyButton {
     bool emit = true;
     int retval = 0;
     unsigned long prevtime = millis();
+    unsigned long debouncetime = BTN_DBNC_TIME;
+    unsigned long longpresstime = BTN_LONG_TIME;
+    unsigned long repeatedpresstime = BTN_REPT_TIME;
+    
     
     void loop();
     
@@ -47,6 +51,10 @@ class MyButton {
     int peek();
     int get();
     int count();
+    void setDebounceTime(int t);
+    void setLongPressTime(int t);
+    void setRepeatedPressTime(int t);
+    
 };
 
 #endif

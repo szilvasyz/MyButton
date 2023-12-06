@@ -69,6 +69,21 @@ int MyButton::count() {
 }
 
 
+void MyButton::setDebounceTime(int t)  {
+  debouncetime = t;
+}
+
+
+void MyButton::setLongPressTime(int t) {
+  longpresstime = t;
+}
+
+
+void MyButton::setRepeatedPressTime(int t) {
+  repeatedpresstime = t;
+}
+ 
+
 void MyButton::loop() {
   uint16_t button = 0;
   uint16_t bitval = 1;
@@ -80,13 +95,13 @@ void MyButton::loop() {
   // Serial.printf("key%d ", button);
   
   if (prevbtn == button) {
-    if ((btntime - prevtime > BTN_REPT_TIME) && !emit && button) {
+    if ((btntime - prevtime > repeatedpresstime) && !emit && button) {
       // Serial.printf("reptkey%d ", button);
       if (!retval) retval = button | BTN_REPT_PRESS;
       prevtime = btntime;
       return;
     }
-    if ((btntime - prevtime > BTN_LONG_TIME) && emit && button) {
+    if ((btntime - prevtime > longpresstime) && emit && button) {
       // Serial.printf("longkey%d ", button);
       if (!retval) retval = button | BTN_LONG_PRESS;
       prevtime = btntime;
@@ -96,7 +111,7 @@ void MyButton::loop() {
     return;
   }
 
-  if ((btntime - prevtime > BTN_DBNC_TIME) && emit && prevbtn) {
+  if ((btntime - prevtime > debouncetime) && emit && prevbtn) {
     // Serial.printf("shortkey%d ", prevbtn);
     if (!retval) retval = prevbtn;
   }
